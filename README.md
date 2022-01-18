@@ -34,11 +34,11 @@ Create a new cluster from the command line:
 
 ```bash
 export CLUSTER=pulsar-mp-cluster
-export CLUSTER_SIZE=4
+export CLUSTER_SIZE=3
 export ZONE=us-central1-a
 gcloud container clusters create "${CLUSTER}" \
     --zone "$ZONE" \
-    --machine-type e2-standard-4 \
+    --machine-type n1-standard-8 \
     --num-nodes "$CLUSTER_SIZE"
 ```
 
@@ -179,7 +179,16 @@ watch kubectl get pods --namespace "$NAMESPACE"
 OUTPUT:
 
 ```
-TODO
+NAME                                      READY   STATUS      RESTARTS   AGE
+pulsar-mp-adminconsole-6dd85fdd66-lvvw2   2/2     Running     0          2m48s
+pulsar-mp-autorecovery-85c888cbdf-7c554   1/1     Running     1          2m48s
+pulsar-mp-bastion-8db47d6f6-9nnrt         1/1     Running     0          2m48s
+pulsar-mp-bookkeeper-0                    1/1     Running     0          2m47s
+pulsar-mp-broker-556d45d49-9ftsc          1/1     Running     0          2m48s
+pulsar-mp-deployer-mhllh                  0/1     Completed   0          3m9s
+pulsar-mp-proxy-769f4f867d-b5v7n          2/2     Running     0          2m48s
+pulsar-mp-zookeeper-0                     1/1     Running     0          2m47s
+pulsar-mp-zookeeper-metadata-l5wxr        0/1     Completed   0          2m47s
 ```
 
 #### View the app in the Google Cloud Console
@@ -221,6 +230,7 @@ for resource_type in \
     clusterrole \
     clusterrolebinding \
     configmap \
+    daemonset \
     deployment \
     job \
     mutatingwebhookconfiguration \
@@ -230,7 +240,6 @@ for resource_type in \
     podsecuritypolicy \
     prometheus \
     prometheusrule \
-    reaper \
     replicaset \
     role \
     rolebinding \
