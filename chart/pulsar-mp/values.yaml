@@ -1,12 +1,22 @@
 pulsar:
   fullnameOverride: pulsar-mp
+  extra:
+    pulsarAdminConsole: true
   default_storage:
     existingStorageClassName: pulsar-storage
-  enableAntiAffinity: false
-  enableTls: false
-  enableTokenAuth: false
-  restartOnConfigMapChange:
-    enabled: true
+  rbac:
+    create: true
+    clusterRoles: false
+  pulsarAdminConsole:
+    authMode: k8s
+    createUserSecret:
+      enabled: true
+      user: 'admin'
+      password: 'password'
+  kube-prometheus-stack:
+    enabled: false
+    defaultRules:
+      create: true
   zookeeper:
     replicaCount: 1
     resources:
