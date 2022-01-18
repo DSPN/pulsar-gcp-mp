@@ -1,0 +1,62 @@
+apiVersion: app.k8s.io/v1beta1
+
+kind: Application
+
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+  annotations:
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "datastax-public", "product_id": "pulsar-mp", "partner_name": "DataStax"}'
+
+spec:
+  descriptor:
+    type: pulsar-mp
+    version: "2.0.11"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  addOwnerRef: true
+  componentKinds:
+    - group: 'v1'
+      kind: PersistentVolumeClaim
+    - group: 'v1'
+      kind: Service
+    - group: 'apps/v1'
+      kind: StatefulSet
+    - group: 'apiextensions.k8s.io/v1beta1'
+      kind: CustomResourceDefinition
+    - group: 'policy/v1beta1'
+      kind: PodSecurityPolicy
+    - group: 'v1'
+      kind: ServiceAccount
+    - group: 'v1'
+      kind: Secret
+    - group: 'v1'
+      kind: ConfigMap
+    - group: 'rbac.authorization.k8s.io/v1'
+      kind: ClusterRole
+    - group: 'rbac.authorization.k8s.io/v1'
+      kind: ClusterRoleBinding
+    - group: 'rbac.authorization.k8s.io/v1'
+      kind: Role
+    - group: 'rbac.authorization.k8s.io/v1'
+      kind: RoleBinding
+    - group: 'apps/v1'
+      kind: Deployment
+    - group: 'admissionregistration.k8s.io/v1'
+      kind: MutatingWebhookConfiguration
+    - group: 'monitoring.coreos.com/v1'
+      kind: Prometheus
+    - group: 'monitoring.coreos.com/v1'
+      kind: PrometheusRule
+    - group: 'monitoring.coreos.com/v1'
+      kind: ServiceMonitor
+    - group: 'admissionregistration.k8s.io/v1'
+      kind: ValidatingWebhookConfiguration
+    - group: 'v1'
+      kind: Pod
+    - group: 'batch/v1'
+      kind: Job
+

@@ -1,0 +1,6 @@
+dependencies:
+- name: pulsar
+  repository: https://datastax.github.io/pulsar-helm-chart
+  version: 2.0.11
+digest: sha256:ea17010b17733366214b68cd514fd1de9a761edd3f119bba15d37b5441ca1ae6
+generated: "2022-01-09T14:29:43.509852-07:00"
