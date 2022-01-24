@@ -4,9 +4,6 @@ pulsar:
     pulsarAdminConsole: true
   default_storage:
     existingStorageClassName: pulsar-storage
-  rbac:
-    create: true
-    clusterRoles: false
   pulsarAdminConsole:
     authMode: k8s
     createUserSecret:
@@ -14,9 +11,12 @@ pulsar:
       user: 'admin'
       password: 'password'
   kube-prometheus-stack:
-    enabled: false
-    defaultRules:
-      create: true
+    enabled: true 
+    prometheusOperator:
+      enabled: true
+    grafana:
+      enabled: true
+      adminPassword: password
   zookeeper:
     replicaCount: 1
     resources:
@@ -68,3 +68,6 @@ pulsar:
     service:
       autoPortAssign:
         enabled: true
+  image:
+    pulsarAdminConsoleNginx:
+      repository: "nginxinc/nginx-unprivileged:stable-alpine"
