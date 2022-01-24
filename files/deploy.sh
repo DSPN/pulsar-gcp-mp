@@ -72,11 +72,16 @@ CHART_FILE_NAME=chart-kustomized.yaml envsubst \
 kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized2.yaml
 
 CHART_FILE_NAME=chart-kustomized2.yaml envsubst \
+    < /app/kubesystem_kustomize.yaml \
+    > /data/manifest-expanded/kustomization.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized3.yaml
+
+CHART_FILE_NAME=chart-kustomized3.yaml envsubst \
     < /app/crds_kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
 kustomize build /data/manifest-expanded > /data/manifest-expanded/chart.yaml
 
-rm /data/manifest-expanded/{kustomization,chart-kustomized,chart-kustomized2}.yaml
+rm /data/manifest-expanded/{kustomization,chart-kustomized,chart-kustomized2,chart-kustomized3}.yaml
 
 # Assign owner references for the resources.
 /bin/set_ownership.py \
@@ -93,6 +98,8 @@ validate_app_resource.py --manifests "/data/resources.yaml"
   --manifest "/data/resources.yaml" \
   --status "Pending"
 
+cat /data/resources.yaml
+
 # Apply the manifest.
 kubectl apply --namespace="$NAMESPACE" \
               --filename="/data/resources.yaml" \
@@ -103,7 +110,12 @@ sleep 10
 # Now apply the other non crd resources.
 kubectl apply  --namespace="$NAMESPACE" \
                --filename="/data/resources.yaml" \
-               --selector is-crd=no,excluded-resource=no
+               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=no
+
+# Lastly, apply the resources that require the kube-system namespace to be specified.
+kubectl apply  --namespace="kube-system" \
+               --filename="/data/resources.yaml" \
+               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=yes
 
 patch_assembly_phase.sh --status="Success"
 

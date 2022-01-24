@@ -12,7 +12,152 @@ x-google-marketplace:
       - Feature
     recommended: true
   
-  images: {}
+  images:
+
+    broker:
+      properties:
+        pulsar.image.broker.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.broker.tag:
+          type: TAG
+
+    broker-sts:
+      properties:
+        pulsar.image.brokerSts.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.brokerSts.tag:
+          type: TAG
+
+    function:
+      properties:
+        pulsar.image.function.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.function.tag:
+          type: TAG
+
+    zookeeper:
+      properties:
+        pulsar.image.zookeeper.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.zookeeper.tag:
+          type: TAG
+
+    bookkeeper:
+      properties:
+        pulsar.image.bookkeeper.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.bookkeeper.tag:
+          type: TAG
+ 
+    proxy:
+      properties:
+        pulsar.image.proxy.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.proxy.tag:
+          type: TAG
+
+    bastion:
+      properties:
+        pulsar.image.bastion.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.bastion.tag:
+          type: TAG
+
+    pulsar-beam:
+      properties:
+        pulsar.image.pulsarBeam.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.pulsarBeam.tag:
+          type: TAG
+ 
+    burnell:
+      properties:
+        pulsar.image.burnell.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.burnell.tag:
+          type: TAG
+ 
+    burnell-log-collector:
+      properties:
+        pulsar.image.burnellLogCollector.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.burnellLogCollector.tag:
+          type: TAG
+ 
+    pulsar-sql:
+      properties:
+        pulsar.image.pulsarSQL.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.pulsarSQL.tag:
+          type: TAG
+
+    tardigrade:
+      properties:
+        pulsar.image.tardigrade.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.tardigrade.tag:
+          type: TAG
+
+    pulsar-heartbeat:
+      properties:
+        pulsar.image.pulsarHeartbeat.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.pulsarHeartbeat.tag:
+          type: TAG
+
+    pulsar-admin-console:
+      properties:
+        pulsar.image.pulsarAdminConsole.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.image.pulsarAdminConsole.tag:
+          type: TAG
+
+    nginx-unprivileged:
+      properties:
+        pulsar.image.pulsarAdminConsoleNginx.repository:
+          type: FULL
+
+    prometheus-alert-manager:
+      properties:
+        pulsar.kube-prometheus-stack.alertmanager.alertManagerSpec.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.alertmanager.alertManagerSpec.image.tag:
+          type: TAG
+
+    prometheus-operator-admission-webhooks-patch:
+      properties:
+        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.tag:
+          type: TAG
+
+    prometheus-operator:
+      properties:
+        pulsar.kube-prometheus-stack.prometheusOperator.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheusOperator.image.tag:
+          type: TAG
+
+    prometheus-operator-configmap-reload:
+      properties:
+        pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.tag:
+          type: TAG
+
+    prometheus-operator-prometheus-config-reloader:
+      properties:
+        pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.tag:
+          type: TAG
+
+    prometheus:
+      properties:
+        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.tag:
+          type: TAG
 
   deployerServiceAccount:
     description: >
@@ -21,7 +166,7 @@ x-google-marketplace:
     - type: ClusterRole
       rulesType: CUSTOM
       rules:
-      - apiGroups: ['admissionregistration.k8s.io','apiextensions.k8s.io','apiregistration.k8s.io','apps','authentication.k8s.io','authorization.k8s.io','batch','certificates.k8s.io','coordination.k8s.io','core','discovery.k8s.io','events.k8s.io','flowcontrol.apiserver.k8s.io','internal.apiserver.k8s.io','networking.k8s.io','node.k8s.io','policy','rbac.authorization.k8s.io','scheduling.k8s.io','storage.k8s.io']
+      - apiGroups: ['admissionregistration.k8s.io','apiextensions.k8s.io','apiregistration.k8s.io','apps','authentication.k8s.io','authorization.k8s.io','batch','certificates.k8s.io','coordination.k8s.io','core','discovery.k8s.io','events.k8s.io','flowcontrol.apiserver.k8s.io','internal.apiserver.k8s.io','networking.k8s.io','node.k8s.io','policy','rbac.authorization.k8s.io','scheduling.k8s.io','storage.k8s.io','']
         resources: ['*']
         verbs: ['*']
 
@@ -36,6 +181,243 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+
+  burnellServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for burnell component of pulsar
+        roles:
+          - type: Role
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['secrets']
+                verbs: ['get', 'create', 'list']
+              - apiGroups: ['']
+                resources: ['namespaces']
+                verbs: ['list']
+              - apiGroups: ['apps']
+                resources: ['deployments', 'statefulsets']
+                verbs: ['list']
+
+  grafanaServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for grafana component of pulsar
+        roles:
+          - type: Role
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['extensions']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['secrets', 'configmaps']
+                verbs: ['get', 'watch', 'list']
+
+  kube-prometheus-admissionServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for kube-prometheus-admission component of pulsar
+        roles:
+          - type: Role
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['secrets']
+                verbs: ['get', 'create']
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['admissionregistration.k8s.io']
+                resources: ['validatingwebhookconfigurations','mutatingwebhookconfigurations']
+                verbs: ['get', 'update']
+              - apiGroups: ['policy']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
+
+  kube-prometheus-operatorServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the kube-promethe-operator component of pulsar
+        roles:
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['monitoring.coreos.com']
+                resources: ['alertmanagers','alertmanagers/finalizers','alertmanagerconfigs','prometheuses','prometheuses/finalizers','thanosrulers','thanosrulers/finalizers','servicemonitors','podmonitors','probes','prometheusrules']
+                verbs: ['*']
+              - apiGroups: ['apps']
+                resources: ['statefulsets']
+                verbs: ['*']
+              - apiGroups: ['']
+                resources: ['configmaps','secrets']
+                verbs: ['*']
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['list', 'delete']
+              - apiGroups: ['']
+                resources: ['services','services/finalizers','endpoints']
+                verbs: ['get','create','update','delete']
+              - apiGroups: ['']
+                resources: ['nodes']
+                verbs: ['list','watch']
+              - apiGroups: ['']
+                resources: ['namespaces']
+                verbs: ['get','list','watch']
+              - apiGroups: ['networking.k8s.io']
+                resources: ['ingress']
+                verbs: ['get','list','watch']
+              - apiGroups: ['policy']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
+
+  kube-prometheus-prometheusServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the kube-prometheus-prometheus component of pulsar
+        roles:
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['nodes','nodes/metrics','services','endpoints','pods']
+                verbs: ['get','list','watch']
+              - apiGroups: ['networking.k8s.io']
+                resources: ['ingress']
+                verbs: ['get','watch','list']
+              - apiGroups: ['policy']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
+
+  kube-state-metricsServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the kube-state-metrics component of pulsar
+        roles:
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['policy']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
+              - apiGroups: ['certificates.k8s.io']
+                resources: ['certificatesigningrequests']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['configmaps']
+                verbs: ['list', 'watch']
+              - apiGroups: ['batch']
+                resources: ['cronjobs']
+                verbs: ['list', 'watch']
+              - apiGroups: ['extensions', 'apps']
+                resources: ['daemonsets']
+                verbs: ['list', 'watch']
+              - apiGroups: ['extensions', 'apps']
+                resources: ['deployments']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['endpoints']
+                verbs: ['list', 'watch']
+              - apiGroups: ['autoscaling']
+                resources: ['horizontalpodautoscalers']
+                verbs: ['list', 'watch']
+              - apiGroups: ['extensions', 'networking.k8s.io']
+                resources: ['ingresses']
+                verbs: ['list', 'watch']
+              - apiGroups: ['batch']
+                resources: ['jobs']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['limitranges']
+                verbs: ['list', 'watch']
+              - apiGroups: ['admissionregistration.k8s.io']
+                resources: ['mutatingwebhookconfigurations']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['namespaces']
+                verbs: ['list', 'watch']
+              - apiGroups: ['networking.k8s.io']
+                resources: ['networkpolicies']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['nodes']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['persistentvolumeclaims']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['persistentvolumes']
+                verbs: ['list', 'watch']
+              - apiGroups: ['policy']
+                resources: ['poddisruptionbudgets']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['list', 'watch']
+              - apiGroups: ['extensions', 'apps']
+                resources: ['replicasets']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['replicationcontrollers']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['resourcequotas']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['secrets']
+                verbs: ['list', 'watch']
+              - apiGroups: ['']
+                resources: ['services']
+                verbs: ['list', 'watch']
+              - apiGroups: ['apps']
+                resources: ['statefulsets']
+                verbs: ['list', 'watch']
+              - apiGroups: ['storage.k8s.io']
+                resources: ['storageclasses']
+                verbs: ['list', 'watch']
+              - apiGroups: ['admissionregistration.k8s.io']
+                resources: ['validatingwebhookconfigurations']
+                verbs: ['list', 'watch']
+              - apiGroups: ['storage.k8s.io']
+                resources: ['volumeattachments']
+                verbs: ['list', 'watch']
+
+  prometheus-node-exporterServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the prometheus-node-exporter component of pulsar
+        roles:
+          - type: ClusterRole
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['extensions']
+                resources: ['podsecuritypolicies']
+                verbs: ['use']
 
 required:
   - name
