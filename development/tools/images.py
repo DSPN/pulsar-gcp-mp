@@ -17,6 +17,30 @@ valid_operations = (
 image_map = {
     'luna-streaming': 'datastax/lunastreaming:2.8.0_1.1.11',
     'luna-streaming-all': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    'pulsar-admin-console': 'datastax/pulsar-admin-console:1.1.4',
+    'grafana': 'grafana/grafana:7.3.5',
+    'kube-webhook-certgen': 'jettech/kube-webhook-certgen:v1.5.0',
+    'k8s-sidecar': 'kiwigrid/k8s-sidecar:1.1.0',
+    'nginx-unprivileged': 'nginxinc/nginx-unprivileged:stable-alpine',
+    'kube-state-metrics': 'quay.io/coreos/kube-state-metrics:v1.9.7',
+    'prometheus-config-reloader': 'quay.io/prometheus-operator/prometheus-config-reloader:v0.44.0',
+    'prometheus-operator': 'quay.io/prometheus-operator/prometheus-operator:v0.44.0',
+    'node-exporter': 'quay.io/prometheus/node-exporter:v1.0.1',
+    'prometheus': 'quay.io/prometheus/prometheus:v2.22.1',
+    'broker': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    'broker-sts': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    'function': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    'zookeeper': 'datastax/lunastreaming:2.8.0_1.1.11',
+    'bookkeeper': 'datastax/lunastreaming:2.8.0_1.1.11',
+    'proxy': 'datastax/lunastreaming:2.8.0_1.1.11',
+    'bastion': 'datastax/lunastreaming:2.8.0_1.1.11',
+    'pulsar-beam': 'kesque/pulsar-beam:1.0.0',
+    'burnell': 'datastax/burnell:1.0.2',
+    'burnell-log-collector': 'datastax/burnell:logcollector_latest',
+    'pulsar-sql': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    'tardigrade': 'storjlabs/gateway:latest',
+    'pulsar-heartbeat': 'datastax/pulsar-heartbeat:1.0.6',
+    'pulsar-admin-console': 'datastax/pulsar-admin-console:1.1.4'
 }
 
 class ImageFinder:

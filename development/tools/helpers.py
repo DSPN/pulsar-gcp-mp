@@ -38,7 +38,12 @@ def render_template(include_crds=False):
     cp = run(
         f"""
         helm template pulsar-mp {tools_dir}/../../chart/pulsar-mp/charts/*.tgz \
-            {include_crds_opt}
+            {include_crds_opt} \
+            --set kube-prometheus-stack.enabled=true \
+            --set kube-prometheus-stack.prometheusOperator.enabled=true \
+            --set kube-prometheus-stack.grafana.enabled=true \
+            --set extra.pulsarAdminConsole.enabled=true \
+            --set fullnameOverride=pulsar-mp
         """
         )
     if cp.returncode != 0:
