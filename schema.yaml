@@ -63,7 +63,7 @@ x-google-marketplace:
         pulsar.image.bastion.tag:
           type: TAG
 
-    pulsar-beam:
+    beam:
       properties:
         pulsar.image.pulsarBeam.repository:
           type: REPO_WITH_REGISTRY
@@ -84,7 +84,7 @@ x-google-marketplace:
         pulsar.image.burnellLogCollector.tag:
           type: TAG
  
-    pulsar-sql:
+    sql:
       properties:
         pulsar.image.pulsarSQL.repository:
           type: REPO_WITH_REGISTRY
@@ -98,24 +98,31 @@ x-google-marketplace:
         pulsar.image.tardigrade.tag:
           type: TAG
 
-    pulsar-heartbeat:
+    heartbeat:
       properties:
         pulsar.image.pulsarHeartbeat.repository:
           type: REPO_WITH_REGISTRY
         pulsar.image.pulsarHeartbeat.tag:
           type: TAG
 
-    pulsar-admin-console:
+    admin-console:
       properties:
         pulsar.image.pulsarAdminConsole.repository:
           type: REPO_WITH_REGISTRY
         pulsar.image.pulsarAdminConsole.tag:
           type: TAG
 
-    nginx-unprivileged:
+    admin-console-nginx:
       properties:
         pulsar.image.pulsarAdminConsoleNginx.repository:
           type: FULL
+
+    prometheus:
+      properties:
+        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.tag:
+          type: TAG
 
     prometheus-alert-manager:
       properties:
@@ -124,11 +131,11 @@ x-google-marketplace:
         pulsar.kube-prometheus-stack.alertmanager.alertManagerSpec.image.tag:
           type: TAG
 
-    prometheus-operator-admission-webhooks-patch:
+    prometheus-node-exporter:
       properties:
-        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.repository:
+        pulsar.kube-prometheus-stack.prometheus-node-exporter.image.repository:
           type: REPO_WITH_REGISTRY
-        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.tag:
+        pulsar.kube-prometheus-stack.prometheus-node-exporter.image.tag:
           type: TAG
 
     prometheus-operator:
@@ -138,6 +145,13 @@ x-google-marketplace:
         pulsar.kube-prometheus-stack.prometheusOperator.image.tag:
           type: TAG
 
+    prometheus-operator-admission-webhooks-patch:
+      properties:
+        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.tag:
+          type: TAG
+
     prometheus-operator-configmap-reload:
       properties:
         pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.repository:
@@ -145,18 +159,32 @@ x-google-marketplace:
         pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.tag:
           type: TAG
 
-    prometheus-operator-prometheus-config-reloader:
+    prometheus-operator-config-reloader:
       properties:
         pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.repository:
           type: REPO_WITH_REGISTRY
         pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.tag:
           type: TAG
 
-    prometheus:
+    kube-state-metrics:
       properties:
-        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.repository:
+        pulsar.kube-prometheus-stack.kube-state-metrics.image.repository:
           type: REPO_WITH_REGISTRY
-        pulsar.kube-prometheus-stack.prometheus.prometheusSpec.image.tag:
+        pulsar.kube-prometheus-stack.kube-state-metrics.image.tag:
+          type: TAG
+
+    grafana:
+      properties:
+        pulsar.kube-prometheus-stack.grafana.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.grafana.image.tag:
+          type: TAG
+
+    grafana-sidecar:
+      properties:
+        pulsar.kube-prometheus-stack.grafana.sidecar.image.repository:
+          type: REPO_WITH_REGISTRY
+        pulsar.kube-prometheus-stack.grafana.sidecar.image.tag:
           type: TAG
 
   deployerServiceAccount:
@@ -181,6 +209,13 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+
+  pulsar.default_storage.existingStorageClassName:
+    type: string
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
 
   burnellServiceAccount:
     type: string
