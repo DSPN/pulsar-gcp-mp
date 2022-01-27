@@ -17,6 +17,21 @@ pulsar:
     grafana:
       enabled: true
       adminPassword: password
+      sidecar:
+        image:
+          repository: kiwigrid/k8s-sidecar
+          tag: 1.1.0
+      image:
+        repository: grafana/grafana
+        tag: 7.3.5
+    kube-state-metrics:
+      image:
+        repository: quay.io/coreos/kube-state-metrics
+        tag: v1.9.7
+    prometheus-node-exporter:
+      image:
+        repository: quay.io/prometheus/node-exporter
+        tag: v1.0.1
   zookeeper:
     replicaCount: 1
     resources:

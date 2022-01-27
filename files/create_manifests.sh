@@ -87,9 +87,10 @@ echo "==================="
 # Run helm expansion.
 for chart in "$data_dir/extracted"/*; do
   chart_manifest_file=$(basename "$chart" | sed 's/.tar.gz$//').yaml
-  if [ -e "$chart/chart/charts/pulsar/templates/admin-console/pulsar-admin-console-deployment.yaml" ]; then
-    sed -i "s|^.*image: nginxinc.*$|        image: {{ .Values.image.pulsarAdminConsoleNginx.repository }}|" \
-      "$chart/chart/charts/pulsar/templates/admin-console/pulsar-admin-console-deployment.yaml"
+  yaml_file="$chart/chart/charts/pulsar/templates/admin-console/pulsar-admin-console-deployment.yaml"
+  if [ -e "$yaml_file" ]; then
+    sed -i "s|^.*image: nginxinc.*$|        image: {{ .Values.image.pulsarAdminConsoleNginx.repository }}|" "$yaml_file"
+    cat "$yaml_file"
   fi
   helm template "$NAME" "$chart/chart" \
     --include-crds \
