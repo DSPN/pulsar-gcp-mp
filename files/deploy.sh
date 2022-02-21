@@ -83,6 +83,22 @@ kustomize build /data/manifest-expanded > /data/manifest-expanded/chart.yaml
 
 rm /data/manifest-expanded/{kustomization,chart-kustomized,chart-kustomized2,chart-kustomized3}.yaml
 
+# Create TLS cert and secret
+openssl req -x509 \
+    -sha256 \
+    -newkey rsa:2048 \
+    -keyout /app/tls.key \
+    -out /app/tls.crt \
+    -days 18250 \
+    -nodes \
+    -subj "/C=US/ST=CA/L=NA/O=IT/CN=$NAME.$NAMESPACE"
+cat /app/tls.key | base64 -w 0 > /app/tlsb64e.key
+cat /app/tls.crt | base64 -w 0 > /app/tlsb64e.crt
+
+sed -r -i "s|(^ *?tls.key:).*$|\1 $(cat /app/tlsb64e.key)|" /data/manifest-expanded/chart.yaml
+sed -r -i "s|(^ *?tls.crt:).*$|\1 $(cat /app/tlsb64e.crt)|" /data/manifest-expanded/chart.yaml
+sed -r -i "s|(^ *?ca.crt:).*$|\1 $(cat /app/tlsb64e.crt)|" /data/manifest-expanded/chart.yaml
+
 # Assign owner references for the resources.
 /bin/set_ownership.py \
   --app_name "$NAME" \
@@ -97,8 +113,6 @@ validate_app_resource.py --manifests "/data/resources.yaml"
 /bin/setassemblyphase.py \
   --manifest "/data/resources.yaml" \
   --status "Pending"
-
-cat /data/resources.yaml
 
 # Apply the manifest.
 kubectl apply --namespace="$NAMESPACE" \

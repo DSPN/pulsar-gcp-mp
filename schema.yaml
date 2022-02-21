@@ -145,7 +145,7 @@ x-google-marketplace:
         pulsar.kube-prometheus-stack.prometheusOperator.image.tag:
           type: TAG
 
-    prometheus-operator-admission-webhooks-patch:
+    prometheus-operator-admission-patch:
       properties:
         pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.repository:
           type: REPO_WITH_REGISTRY
