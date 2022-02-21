@@ -35,9 +35,11 @@ Create a new cluster from the command line:
 ```bash
 export CLUSTER=pulsar-mp-cluster
 export CLUSTER_SIZE=3
-export ZONE=us-central1-a
+export ZONE=us-west1-a
+export RELEASE_CHANNEL=rapid
 gcloud container clusters create "${CLUSTER}" \
     --zone "$ZONE" \
+    --release-channel "$RELEASE_CHANNEL" \
     --machine-type n1-standard-8 \
     --num-nodes "$CLUSTER_SIZE"
 ```

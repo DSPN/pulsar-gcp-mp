@@ -16,5 +16,34 @@ patches:
     target:
       kind: Service
       name: $NAME-kube-prometheus-kube-etcd
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/requires-kube-system-namespace
+        value: "yes"
+    target:
+      kind: Role
+      name: $NAME-cert-manager-cainjector:leaderelection
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/requires-kube-system-namespace
+        value: "yes"
+    target:
+      kind: Role
+      name: $NAME-cert-manager:leaderelection
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/requires-kube-system-namespace
+        value: "yes"
+    target:
+      kind: RoleBinding
+      name: $NAME-cert-manager-cainjector:leaderelection
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/requires-kube-system-namespace
+        value: "yes"
+    target:
+      kind: RoleBinding
+      name: $NAME-cert-manager:leaderelection
+
 resources:
   - $CHART_FILE_NAME
