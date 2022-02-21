@@ -43,6 +43,9 @@ def render_template(include_crds=False):
             --set kube-prometheus-stack.prometheusOperator.enabled=true \
             --set kube-prometheus-stack.grafana.enabled=true \
             --set extra.pulsarAdminConsole.enabled=true \
+            --set secrets.key=my-key-placeholder \
+            --set secrets.certificate=my-cert-placeholder \
+            --set secrets.caCertificate=my-ca-cert-placeholder \
             --set fullnameOverride=pulsar-mp
         """
         )

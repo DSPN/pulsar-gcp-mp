@@ -14,6 +14,9 @@ valid_operations = (
     'publish',
 )
 
+# See this issue for why we used k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+# instead of jettech/kube-webhook-certgen:
+# https://github.com/jet/kube-webhook-certgen/issues/30
 image_map = {
     'admin-console': 'datastax/pulsar-admin-console:1.1.4',
     'admin-console-nginx': 'nginxinc/nginx-unprivileged:stable-alpine',
@@ -23,7 +26,7 @@ image_map = {
     'prometheus': 'quay.io/prometheus/prometheus:v2.22.1',
     'prometheus-node-exporter': 'quay.io/prometheus/node-exporter:v1.0.1',
     'prometheus-operator': 'quay.io/prometheus-operator/prometheus-operator:v0.44.0',
-    'prometheus-operator-admission-webhooks-patch': 'jettech/kube-webhook-certgen:v1.5.0',
+    'prometheus-operator-admission-patch': 'k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1',
     'prometheus-operator-configmap-reload': 'docker.io/jimmidyson/configmap-reload:v0.4.0',
     'prometheus-operator-config-reloader': 'quay.io/prometheus-operator/prometheus-config-reloader:v0.44.0',
     'broker': 'datastax/lunastreaming-all:2.8.0_1.1.11',
