@@ -49,164 +49,140 @@ patches:
         value: "yes"
     target:
       kind: ServiceAccount
-      name: $NAME-cass-operator
+      name: $NAME-$KUBE_PROM_NAME-admission
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: Role
-      name: $NAME-cass-operator
+      name: $NAME-$KUBE_PROM_NAME-admission
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: RoleBinding
-      name: $NAME-cass-operator
+      name: $NAME-$KUBE_PROM_NAME-admission
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRole
-      name: $NAME-cass-operator-cr
+      name: $NAME-$KUBE_PROM_NAME-admission
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRoleBinding
-      name: $NAME-cass-operator-cr
+      name: $NAME-$KUBE_PROM_NAME-admission
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ServiceAccount
-      name: $NAME-kube-promethe-admission
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      kind: Role
-      name: $NAME-kube-promethe-admission
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      kind: RoleBinding
-      name: $NAME-kube-promethe-admission
+      name: $NAME-$KUBE_PROM_NAME-operator
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRole
-      name: $NAME-kube-promethe-admission
+      name: $NAME-$KUBE_PROM_NAME-operator
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRoleBinding
-      name: $NAME-kube-promethe-admission
+      name: $NAME-$KUBE_PROM_NAME-operator
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/excluded-resource
+        value: "yes"
+    target:
+      kind: ClusterRole
+      name: $NAME-$KUBE_PROM_NAME-operator-psp
+  - patch: |-
+      - op: replace
+        path: /metadata/labels/excluded-resource
+        value: "yes"
+    target:
+      kind: ClusterRoleBinding
+      name: $NAME-$KUBE_PROM_NAME-operator-psp
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ServiceAccount
-      name: $NAME-kube-promethe-operator
+      name: $NAME-$KUBE_PROM_NAME-prometheus
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRole
-      name: $NAME-kube-promethe-operator
+      name: $NAME-$KUBE_PROM_NAME-prometheus
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRoleBinding
-      name: $NAME-kube-promethe-operator
+      name: $NAME-$KUBE_PROM_NAME-prometheus
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRole
-      name: $NAME-kube-promethe-operator-psp
+      name: $NAME-$KUBE_PROM_NAME-prometheus-psp
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ClusterRoleBinding
-      name: $NAME-kube-promethe-operator-psp
+      name: $NAME-$KUBE_PROM_NAME-prometheus-psp
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
       kind: ServiceAccount
-      name: $NAME-kube-promethe-prometheus
+      name: $NAME-burnell
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
-      kind: ClusterRole
-      name: $NAME-kube-promethe-prometheus
+      kind: ServiceAccount
+      name: $NAME-function
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
-      kind: ClusterRoleBinding
-      name: $NAME-kube-promethe-prometheus
+      kind: ServiceAccount
+      name: $NAME-kube-state-metrics
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
-      kind: ClusterRole
-      name: $NAME-kube-promethe-prometheus-psp
+      kind: ServiceAccount
+      name: $NAME-prometheus-node-exporter
   - patch: |-
       - op: replace
         path: /metadata/labels/excluded-resource
         value: "yes"
     target:
-      kind: ClusterRoleBinding
-      name: $NAME-kube-promethe-prometheus-psp
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      name: $NAME-cleaner-k8ssandra
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      name: $NAME-cleaner-job-k8ssandra
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      name: $NAME-crd-upgrader-k8ssandra
-  - patch: |-
-      - op: replace
-        path: /metadata/labels/excluded-resource
-        value: "yes"
-    target:
-      name: $NAME-crd-upgrader-job-k8ssandra
+      kind: ServiceAccount
+      name: $NAME-pulsarheartbeat
 
 resources:
   - $CHART_FILE_NAME

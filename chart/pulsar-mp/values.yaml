@@ -1,5 +1,5 @@
 pulsar:
-  fullnameOverride: pulsar-mp
+  fullnameOverride: fullname-override-template-placeholder
   enableAntiAffinity: false
   enableTls: true
   tlsSecretName: pulsar-mp-tls

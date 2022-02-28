@@ -8,14 +8,14 @@ patches:
         value: "yes"
     target:
       kind: Service
-      name: $NAME-kube-prometheus-coredns
+      name: $NAME-$KUBE_PROM_NAME-coredns
   - patch: |-
       - op: replace
         path: /metadata/labels/requires-kube-system-namespace
         value: "yes"
     target:
       kind: Service
-      name: $NAME-kube-prometheus-kube-etcd
+      name: $NAME-$KUBE_PROM_NAME-kube-etcd
   - patch: |-
       - op: replace
         path: /metadata/labels/requires-kube-system-namespace

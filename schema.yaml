@@ -223,7 +223,7 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          service account used for burnell component of pulsar
+          service account used for the burnell component of pulsar
         roles:
           - type: Role
             rulesType: CUSTOM
@@ -238,13 +238,55 @@ properties:
                 resources: ['deployments', 'statefulsets']
                 verbs: ['list']
 
+  functionServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the function component of pulsar
+        roles:
+          - type: Role
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['list']
+              - apiGroups: ['']
+                resources: ['secrets']
+                verbs: ['*']
+              - apiGroups: ['']
+                resources: ['services']
+                verbs: ['get', 'create', 'delete']
+              - apiGroups: ['apps']
+                resources: ['statefulsets']
+                verbs: ['get', 'create', 'delete']
+
+  pulsarheartbeatServiceAccount:
+    type: string
+    x-google-marketplace:
+      type: SERVICE_ACCOUNT
+      serviceAccount:
+        description: >
+          service account used for the pulsarheartbeat component of pulsar
+        roles:
+          - type: Role
+            rulesType: CUSTOM
+            rules:
+              - apiGroups: ['']
+                resources: ['pods']
+                verbs: ['list']
+              - apiGroups: ['apps']
+                resources: ['deployments','statefulsets']
+                verbs: ['list']
+
   grafanaServiceAccount:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          service account used for grafana component of pulsar
+          service account used for the grafana component of pulsar
         roles:
           - type: Role
             rulesType: CUSTOM
@@ -265,7 +307,7 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          service account used for kube-prometheus-admission component of pulsar
+          service account used for the kube-prometheus-admission component of pulsar
         roles:
           - type: Role
             rulesType: CUSTOM
@@ -289,7 +331,7 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          service account used for the kube-promethe-operator component of pulsar
+          service account used for the kube-prometheus-operator component of pulsar
         roles:
           - type: ClusterRole
             rulesType: CUSTOM
