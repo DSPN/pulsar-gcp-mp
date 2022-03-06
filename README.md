@@ -973,11 +973,11 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.default_storage.existingStorageClassName="pulsar-storage" \
     --set pulsar.cert-manager.enabled="false" \
     --set pulsar.createCertificates.selfSigned.enabled="false" \
-    --set pulsar.zookeeper.replicaCount="1"
+    --set pulsar.zookeeper.replicaCount="1" \
     --set pulsar.zookeeper.resources.requests.memory="300Mi" \
     --set pulsar.zookeeper.resources.requests.cpu="0.3" \
     --set pulsar.zookeeper.configData.PULSAR_MEM="-Xms300m -Xmx300m -Djute.maxbuffer=10485760 -XX:+ExitOnOutOfMemoryError" \
-    --set pulsar.bookkeeper.replicaCount="1"
+    --set pulsar.bookkeeper.replicaCount="1" \
     --set pulsar.bookkeeper.resources.requests.memory="512Mi" \
     --set pulsar.bookkeeper.resources.requests.cpu="0.3" \
     --set pulsar.bookkeeper.configData.BOOKIE_MEM="-Xms312m -Xmx312m -XX:MaxDirectMemorySize=200m -XX:+ExitOnOutOfMemoryError" \
