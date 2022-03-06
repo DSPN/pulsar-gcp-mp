@@ -242,7 +242,7 @@ rules:
   resources:
   - secrets
   verbs:
-  - *
+  - "*"
 - apiGroups:
   - ""
   resources:
@@ -495,20 +495,20 @@ rules:
   - probes
   - prometheusrules
   verbs:
-  - *
+  - "*"
 - apiGroups:
   - apps
   resources:
   - statefulsets
   verbs:
-  - *
+  - "*"
 - apiGroups:
   - ""
   resources:
   - configmaps
   - secrets
   verbs:
-  - *
+  - "*"
 - apiGroups:
   - ""
   resources:
