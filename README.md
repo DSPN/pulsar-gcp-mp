@@ -982,7 +982,7 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.bookkeeper.resources.requests.cpu="0.3" \
     --set pulsar.bookkeeper.configData.BOOKIE_MEM="-Xms312m -Xmx312m -XX:MaxDirectMemorySize=200m -XX:+ExitOnOutOfMemoryError" \
     --set pulsar.broker.component="broker" \
-    --set pulsar.broker.replicaCount="1 \
+    --set pulsar.broker.replicaCount="1" \
     --set pulsar.broker.ledger.defaultEnsembleSize="1" \
     --set pulsar.broker.ledger.defaultAckQuorum="1" \
     --set pulsar.broker.ledger.defaultWriteQuorum="1" \
@@ -1002,7 +1002,7 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.proxy.resources.requests.cpu="0.3" \
     --set pulsar.proxy.wsResources.requests.memory="512Mi" \
     --set pulsar.proxy.wsResources.requests.cpu="0.3" \
-    --set pulsar.proxy.configData:.PULSAR_MEM="-Xms400m -Xmx400m -XX:MaxDirectMemorySize=112m" \
+    --set pulsar.proxy.configData.PULSAR_MEM="-Xms400m -Xmx400m -XX:MaxDirectMemorySize=112m" \
     --set pulsar.proxy.autoPortAssign.enablePlainTextWithTLS="true" \
     --set pulsar.proxy.service.autoPortAssign.enabled="true" \
     --set pulsar.grafanaDashboards.enabled="true" \
