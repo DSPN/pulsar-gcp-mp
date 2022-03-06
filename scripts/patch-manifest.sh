@@ -34,16 +34,41 @@ cd "${work_dir}"
 
 cp "${script_dir}"/../"${app_instance_name}_manifest.yaml" .
 
-# Apply labels and service account modifications
+sed -i "s|fullname-override-template-placeholder|$NAME|g" "${app_instance_name}_manifest.yaml"
 
-CHART_FILE_NAME="${chart_file_name}" NAME="${app_instance_name}" envsubst \
+KUBE_PROM_NAME="$(grep -E '^.*name: .*-kube-.*-operator$' ${app_instance_name}_manifest.yaml | tail -n1 | awk -F ' ' '{print $2}')"
+KUBE_PROM_NAME="${KUBE_PROM_NAME#${NAME}-}"
+KUBE_PROM_NAME="${KUBE_PROM_NAME%-operator}"
+export KUBE_PROM_NAME
+
+CHART_FILE_NAME=${chart_file_name} envsubst \
     < "${script_dir}"/../files/labels_and_service_accounts_kustomize.yaml \
     > ./kustomization.yaml
 kustomize build . > ./chart-kustomized.yaml
 
-# Apply excluded resources modifications
-
-CHART_FILE_NAME=chart-kustomized.yaml NAME="${app_instance_name}" envsubst \
+CHART_FILE_NAME=chart-kustomized.yaml envsubst \
     < "${script_dir}"/../files/excluded_resources_kustomize.yaml \
     > ./kustomization.yaml
-kustomize build . > "${script_dir}"/../"${chart_file_name}"
+kustomize build . > ./chart-kustomized2.yaml
+
+CHART_FILE_NAME=chart-kustomized2.yaml envsubst \
+    < "${script_dir}"/../files/kubesystem_kustomize.yaml \
+    > ./kustomization.yaml
+kustomize build . > ./chart-kustomized3.yaml
+
+CHART_FILE_NAME=chart-kustomized3.yaml envsubst \
+    < "${script_dir}"/../files/one-off-pods-kustomize.yaml \
+    > ./kustomization.yaml
+kustomize build . > ./chart-kustomized4.yaml
+
+CHART_FILE_NAME=chart-kustomized4.yaml envsubst \
+    < "${script_dir}"/../files/secrets-kustomize.yaml \
+    > ./kustomization.yaml
+kustomize build . > ./chart-kustomized5.yaml
+
+CHART_FILE_NAME=chart-kustomized5.yaml envsubst \
+    < "${script_dir}"/../files/crds_kustomize.yaml \
+    > ./kustomization.yaml
+
+kustomize build . > "${script_dir}"/../${chart_file_name}
+
