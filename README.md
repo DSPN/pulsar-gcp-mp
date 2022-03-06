@@ -663,7 +663,8 @@ rules:
   - use
 - apiGroups:
   - certificates.k8s.io
-  resources:certificatesigningrequests
+  resources:
+  - certificatesigningrequests
   verbs:
   - list
   - watch
