@@ -1029,8 +1029,8 @@ openssl req -x509 \
     -days 18250 \
     -nodes \
     -subj "/C=US/ST=CA/L=NA/O=IT/CN=$NAME.$NAMESPACE"
-cat tls.key | base64 -w 0 > tlsb64e.key || cat tls.key | base64 > tlsb64e.key
-cat tls.crt | base64 -w 0 > tlsb64e.crt || cat tls.crt | base64 > tlsb64e.crt
+cat tls.key | base64 -w 0 > tlsb64e.key 2>/dev/null || cat tls.key | base64 > tlsb64e.key
+cat tls.crt | base64 -w 0 > tlsb64e.crt 2>/dev/null || cat tls.crt | base64 > tlsb64e.crt
 ```
 
 #### Patch the manifest as needed
