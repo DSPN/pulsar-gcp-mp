@@ -1018,28 +1018,7 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
-#### Create TLS cert and secret needed to enable TLS support
-
-```bash
-openssl req -x509 \
-    -sha256 \
-    -newkey rsa:2048 \
-    -keyout tls.key \
-    -out tls.crt \
-    -days 18250 \
-    -nodes \
-    -subj "/C=US/ST=CA/L=NA/O=IT/CN=$NAME.$NAMESPACE"
-cat tls.key | base64 -w 0 > tlsb64e.key 2>/dev/null || cat tls.key | base64 > tlsb64e.key
-cat tls.crt | base64 -w 0 > tlsb64e.crt 2>/dev/null || cat tls.crt | base64 > tlsb64e.crt
-```
-
 #### Patch the manifest as needed
-
-```bash
-sed -r -i "s|(^ *?tls.key:).*$|\1 $(cat tlsb64e.key)|" "${APP_INSTANCE_NAME}_manifest.yaml"
-sed -r -i "s|(^ *?tls.crt:).*$|\1 $(cat tlsb64e.crt)|" "${APP_INSTANCE_NAME}_manifest.yaml"
-sed -r -i "s|(^ *?ca.crt:).*$|\1 $(cat tlsb64e.crt)|" "${APP_INSTANCE_NAME}_manifest.yaml"
-```
 
 We explicitly created the service accounts and RBAC resources above, so we need to modify the manifest to account for this.
 
@@ -1047,21 +1026,21 @@ We explicitly created the service accounts and RBAC resources above, so we need 
 ./scripts/patch-manifest.sh "${APP_INSTANCE_NAME}"
 ```
 
-This will replace default service account names and include common labels needed for the proper execution in the Google Cloud Marketplace environment.
+This will replace default service account names and include common labels needed for the proper execution in the Google Cloud Marketplace environment. It will also create the necessary certificates and keys for TLS support.
 
 #### Apply the manifest to your Kubernetes cluster
 
 First use `kubectl` to apply the CustomResourceDefinitions to your Kubernetes cluster:
 
 ```bash
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml \
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" \
               --namespace="$NAMESPACE" \
               --selector is-crd=yes || true
 
 sleep 5
 
 # We need to apply a second time here to work-around resource order of creation issues.
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml \
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" \
               --namespace="$NAMESPACE" \
               --selector is-crd=yes || true
 
@@ -1079,7 +1058,7 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" \
 Lastly, apply the resources that require the kube-system namespace to be specified:
 
 ```bash
-kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml \
+kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" \
               --namespace="kube-system" \
               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=yes
 ```
