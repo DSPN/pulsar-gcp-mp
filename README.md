@@ -1074,16 +1074,26 @@ watch kubectl get pods --namespace "$NAMESPACE"
 OUTPUT:
 
 ```
-NAME                                      READY   STATUS      RESTARTS   AGE
-pulsar-mp-adminconsole-6dd85fdd66-lvvw2   2/2     Running     0          2m48s
-pulsar-mp-autorecovery-85c888cbdf-7c554   1/1     Running     1          2m48s
-pulsar-mp-bastion-8db47d6f6-9nnrt         1/1     Running     0          2m48s
-pulsar-mp-bookkeeper-0                    1/1     Running     0          2m47s
-pulsar-mp-broker-556d45d49-9ftsc          1/1     Running     0          2m48s
-pulsar-mp-deployer-mhllh                  0/1     Completed   0          3m9s
-pulsar-mp-proxy-769f4f867d-b5v7n          2/2     Running     0          2m48s
-pulsar-mp-zookeeper-0                     1/1     Running     0          2m47s
-pulsar-mp-zookeeper-metadata-l5wxr        0/1     Completed   0          2m47s
+NAME                                                  READY   STATUS      RESTARTS        AGE
+prometheus-pulsar-mp-kube-prometheus-prometheus-0     2/2     Running     1 (90s ago)     95s
+pulsar-mp-adminconsole-6df4945944-5844x               2/2     Running     0               3m53s
+pulsar-mp-autorecovery-56f8bf75fb-lg6qq               1/1     Running     1 (2m36s ago)   3m53s
+pulsar-mp-bastion-5dc7665c7f-whrxc                    1/1     Running     0               3m52s
+pulsar-mp-bookkeeper-0                                1/1     Running     0               3m49s
+pulsar-mp-broker-69df6fcf-hkxnx                       1/1     Running     0               3m52s
+pulsar-mp-function-0                                  2/2     Running     0               3m49s
+pulsar-mp-grafana-774d986ff4-pwff4                    0/2     Init:0/1    0               3m52s
+pulsar-mp-kube-prometheus-admission-create--1-hkjzs   0/1     Completed   0               3m45s
+pulsar-mp-kube-prometheus-admission-patch--1-mxfv4    0/1     Completed   0               3m45s
+pulsar-mp-kube-prometheus-operator-84cd476fd5-hdtk4   1/1     Running     0               3m51s
+pulsar-mp-kube-state-metrics-6c996bb7b8-rwsvj         1/1     Running     0               3m51s
+pulsar-mp-prometheus-node-exporter-dl6mc              1/1     Running     0               3m46s
+pulsar-mp-prometheus-node-exporter-jz67b              1/1     Running     0               3m46s
+pulsar-mp-prometheus-node-exporter-tbp78              1/1     Running     0               3m46s
+pulsar-mp-proxy-6d9f8fd546-rq672                      3/3     Running     0               3m50s
+pulsar-mp-pulsarheartbeat-6fc5596f59-66hpf            1/1     Running     0               3m50s
+pulsar-mp-zookeeper-0                                 1/1     Running     0               3m48s
+pulsar-mp-zookeeper-metadata--1-cb2zg                 0/1     Completed   0               3m45s
 ```
 
 #### View the app in the Google Cloud Console

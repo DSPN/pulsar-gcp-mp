@@ -156,4 +156,8 @@ sed -r -i.bak "s|^  tls.key:.*$|  tls.key: $(cat tlsb64e.key)|" "${chart_file_na
 sed -r -i.bak "s|^  tls.crt:.*$|  tls.crt: $(cat tlsb64e.crt)|" "${chart_file_name}"
 sed -r -i.bak "s|^  ca.crt:.*$|  ca.crt: $(cat tlsb64e.crt)|" "${chart_file_name}"
 
+# remove blank space after command. This happens after we use
+# the 'kustomize build' command for some reason.
+sed -r -i.bak '/initialize-cluster-metadata/{n;d;}' "${chart_file_name}"
+
 mv "${chart_file_name}" "${script_dir}"/../${chart_file_name}
