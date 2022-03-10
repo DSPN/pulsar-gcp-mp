@@ -87,6 +87,24 @@ END
 
 mv manifest.yaml ${chart_file_name}
 
+# Remove spurious version field in Prometheus resource
+$PYTHON << END
+import re
+target_yaml = False
+processed = False
+with open('manifest.yaml', 'w', encoding='utf-8') as out:
+    with open('${chart_file_name}', 'r', encoding='utf-8') as f:
+        for line in f:
+            if re.match('kind: Prometheus$', line):
+                target_yaml = True
+            if target_yaml and 'version: 2' in line and not processed:
+                processed = True
+                continue
+            out.write(line)
+END
+
+mv manifest.yaml ${chart_file_name}
+
 KUBE_PROM_NAME="$(grep -E '^.*name: .*-kube-.*-operator$' ${chart_file_name} | tail -n1 | awk -F ' ' '{print $2}')"
 KUBE_PROM_NAME="${KUBE_PROM_NAME#${NAME}-}"
 KUBE_PROM_NAME="${KUBE_PROM_NAME%-operator}"

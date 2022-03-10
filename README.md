@@ -948,7 +948,7 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.kube-prometheus-stack.prometheusOperator.admissionWebhooks.patch.image.tag="$TAG" \
     --set pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.repository="${REGISTRY}/${REPOSITORY}/${IMAGE_PROMETHEUS_OPERATOR_CONFIG_RELOAD}" \
     --set pulsar.kube-prometheus-stack.prometheusOperator.configmapReloadImage.tag="$TAG" \
-    --set pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.repository="${REGISTRY}/${REPOSITORY}/${IMAGE_PROMETHEUS_OPERATOR_CONFIGMAP_RELOADER}" \
+    --set pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.repository="${REGISTRY}/${REPOSITORY}/${IMAGE_PROMETHEUS_OPERATOR_CONFIG_RELOADER}" \
     --set pulsar.kube-prometheus-stack.prometheusOperator.prometheusConfigReloaderImage.tag="$TAG" \
     --set pulsar.kube-prometheus-stack.kube-state-metrics.image.repository="${REGISTRY}/${REPOSITORY}/${IMAGE_KUBE_STATE_METRICS}" \
     --set pulsar.kube-prometheus-stack.kube-state-metrics.image.tag="$TAG" \
