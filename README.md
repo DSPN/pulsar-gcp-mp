@@ -973,16 +973,16 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.default_storage.existingStorageClassName="pulsar-storage" \
     --set pulsar.cert-manager.enabled="false" \
     --set pulsar.createCertificates.selfSigned.enabled="false" \
-    --set pulsar.zookeeper.replicaCount="1" \
+    --set pulsar.zookeeper.replicaCount="3" \
     --set pulsar.zookeeper.resources.requests.memory="300Mi" \
     --set pulsar.zookeeper.resources.requests.cpu="0.3" \
     --set pulsar.zookeeper.configData.PULSAR_MEM="-Xms300m -Xmx300m -Djute.maxbuffer=10485760 -XX:+ExitOnOutOfMemoryError" \
-    --set pulsar.bookkeeper.replicaCount="1" \
+    --set pulsar.bookkeeper.replicaCount="3" \
     --set pulsar.bookkeeper.resources.requests.memory="512Mi" \
     --set pulsar.bookkeeper.resources.requests.cpu="0.3" \
     --set pulsar.bookkeeper.configData.BOOKIE_MEM="-Xms312m -Xmx312m -XX:MaxDirectMemorySize=200m -XX:+ExitOnOutOfMemoryError" \
     --set pulsar.broker.component="broker" \
-    --set pulsar.broker.replicaCount="1" \
+    --set pulsar.broker.replicaCount="3" \
     --set pulsar.broker.ledger.defaultEnsembleSize="1" \
     --set pulsar.broker.ledger.defaultAckQuorum="1" \
     --set pulsar.broker.ledger.defaultWriteQuorum="1" \
@@ -992,12 +992,12 @@ helm template "${APP_INSTANCE_NAME}" chart/pulsar-mp \
     --set pulsar.autoRecovery.enableProvisionContainer="true" \
     --set pulsar.autoRecovery.resources.requests.memory="300Mi" \
     --set pulsar.autoRecovery.resources.requests.cpu="0.3" \
-    --set pulsar.function.replicaCount="1" \
+    --set pulsar.function.replicaCount="3" \
     --set pulsar.function.functionReplicaCount="1" \
     --set pulsar.function.resources.requests.memory="512Mi" \
     --set pulsar.function.resources.requests.cpu="0.3" \
     --set pulsar.function.configData.PULSAR_MEM="-Xms312m -Xmx312m -XX:MaxDirectMemorySize=200m -XX:+ExitOnOutOfMemoryError" \
-    --set pulsar.proxy.replicaCount="1" \
+    --set pulsar.proxy.replicaCount="3" \
     --set pulsar.proxy.resources.requests.memory="512Mi" \
     --set pulsar.proxy.resources.requests.cpu="0.3" \
     --set pulsar.proxy.wsResources.requests.memory="512Mi" \
@@ -1074,26 +1074,37 @@ watch kubectl get pods --namespace "$NAMESPACE"
 OUTPUT:
 
 ```
-NAME                                                  READY   STATUS      RESTARTS        AGE
-prometheus-pulsar-mp-kube-prometheus-prometheus-0     2/2     Running     1 (90s ago)     95s
-pulsar-mp-adminconsole-6df4945944-5844x               2/2     Running     0               3m53s
-pulsar-mp-autorecovery-56f8bf75fb-lg6qq               1/1     Running     1 (2m36s ago)   3m53s
-pulsar-mp-bastion-5dc7665c7f-whrxc                    1/1     Running     0               3m52s
-pulsar-mp-bookkeeper-0                                1/1     Running     0               3m49s
-pulsar-mp-broker-69df6fcf-hkxnx                       1/1     Running     0               3m52s
-pulsar-mp-function-0                                  2/2     Running     0               3m49s
-pulsar-mp-grafana-774d986ff4-pwff4                    0/2     Init:0/1    0               3m52s
-pulsar-mp-kube-prometheus-admission-create--1-hkjzs   0/1     Completed   0               3m45s
-pulsar-mp-kube-prometheus-admission-patch--1-mxfv4    0/1     Completed   0               3m45s
-pulsar-mp-kube-prometheus-operator-84cd476fd5-hdtk4   1/1     Running     0               3m51s
-pulsar-mp-kube-state-metrics-6c996bb7b8-rwsvj         1/1     Running     0               3m51s
-pulsar-mp-prometheus-node-exporter-dl6mc              1/1     Running     0               3m46s
-pulsar-mp-prometheus-node-exporter-jz67b              1/1     Running     0               3m46s
-pulsar-mp-prometheus-node-exporter-tbp78              1/1     Running     0               3m46s
-pulsar-mp-proxy-6d9f8fd546-rq672                      3/3     Running     0               3m50s
-pulsar-mp-pulsarheartbeat-6fc5596f59-66hpf            1/1     Running     0               3m50s
-pulsar-mp-zookeeper-0                                 1/1     Running     0               3m48s
-pulsar-mp-zookeeper-metadata--1-cb2zg                 0/1     Completed   0               3m45s
+NAME                                                  READY   STATUS      RESTARTS      AGE
+prometheus-pulsar-mp-kube-prometheus-prometheus-0     2/2     Running     1 (29m ago)   29m
+pulsar-mp-adminconsole-67ff8cf755-75855               2/2     Running     0             31m
+pulsar-mp-autorecovery-7bdf9b898-2p4kw                1/1     Running     3 (29m ago)   31m
+pulsar-mp-bastion-7b8468655f-7v96l                    1/1     Running     0             31m
+pulsar-mp-bookkeeper-0                                1/1     Running     0             31m
+pulsar-mp-bookkeeper-1                                1/1     Running     0             28m
+pulsar-mp-bookkeeper-2                                1/1     Running     0             27m
+pulsar-mp-broker-79db65d7cc-6c6zp                     1/1     Running     0             31m
+pulsar-mp-broker-79db65d7cc-b64zn                     1/1     Running     0             31m
+pulsar-mp-broker-79db65d7cc-kwcvs                     1/1     Running     0             31m
+pulsar-mp-deployer--1-frrwd                           0/1     Completed   0             33m
+pulsar-mp-function-0                                  2/2     Running     2 (27m ago)   31m
+pulsar-mp-function-1                                  2/2     Running     0             26m
+pulsar-mp-function-2                                  2/2     Running     0             24m
+pulsar-mp-grafana-7c984d4d95-29fn6                    2/2     Running     0             31m
+pulsar-mp-kube-prometheus-admission-create--1-n5b2w   0/1     Completed   0             31m
+pulsar-mp-kube-prometheus-admission-patch--1-9tp95    0/1     Completed   0             31m
+pulsar-mp-kube-prometheus-operator-7b4d8664d5-fpmrz   1/1     Running     0             31m
+pulsar-mp-kube-state-metrics-7b85ccc746-lnmv8         1/1     Running     0             31m
+pulsar-mp-prometheus-node-exporter-68vvs              1/1     Running     0             31m
+pulsar-mp-prometheus-node-exporter-9lk9r              1/1     Running     0             31m
+pulsar-mp-prometheus-node-exporter-vqvbv              1/1     Running     0             31m
+pulsar-mp-proxy-647f867844-9h76l                      3/3     Running     0             31m
+pulsar-mp-proxy-647f867844-d9fj5                      3/3     Running     0             31m
+pulsar-mp-proxy-647f867844-wnv9b                      3/3     Running     0             31m
+pulsar-mp-pulsarheartbeat-576b89f97c-s6tb6            1/1     Running     0             31m
+pulsar-mp-zookeeper-0                                 1/1     Running     0             31m
+pulsar-mp-zookeeper-1                                 1/1     Running     0             29m
+pulsar-mp-zookeeper-2                                 1/1     Running     0             29m
+pulsar-mp-zookeeper-metadata--1-cq98l                 0/1     Completed   0             31m
 ```
 
 #### View the app in the Google Cloud Console
