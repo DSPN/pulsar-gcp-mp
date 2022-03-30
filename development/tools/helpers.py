@@ -4,10 +4,10 @@ import subprocess
 import yaml
 
 valid_versions = [
-    "2.0.11"
+    "2.0.11-rc1"
 ]
 
-application_name = 'pulsar-mp'
+application_name = 'pulsar-marketplace'
 dev_staging_repo = f"gcr.io/gke-launcher-dev/{application_name}"
 prod_staging_repo = f"gcr.io/datastax-public/{application_name}"
 tools_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))

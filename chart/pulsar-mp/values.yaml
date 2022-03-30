@@ -52,9 +52,9 @@ pulsar:
     component: broker
     replicaCount: 3
     ledger:
-      defaultEnsembleSize: 1
-      defaultAckQuorum: 1
-      defaultWriteQuorum: 1
+      defaultEnsembleSize: 2
+      defaultAckQuorum: 2
+      defaultWriteQuorum: 2
     resources:
       requests:
         memory: 600Mi
