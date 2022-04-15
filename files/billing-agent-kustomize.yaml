@@ -3,10 +3,11 @@ kind: Kustomization
 
 patches:
   - target:
-      kind: CassandraDatacenter
+      kind: Deployment
+      name: $NAME-broker
     patch: |-
       - op: add
-        path: /spec/podTemplateSpec/spec/containers/-
+        path: /spec/template/spec/containers/-
         value:
           name: $NAME-ubbagent
           image: $UBBAGENT_IMAGE
@@ -29,10 +30,11 @@ patches:
             - name: ubbagent-config
               mountPath: /etc/ubbagent
   - target:
-      kind: CassandraDatacenter
+      kind: Deployment
+      name: $NAME-broker
     patch: |-
       - op: add
-        path: /spec/podTemplateSpec/spec/volumes/-
+        path: /spec/template/spec/volumes/-
         value:
           name: ubbagent-config
           configMap:

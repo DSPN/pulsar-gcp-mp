@@ -134,6 +134,12 @@ envsubst \
 kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
 mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
+envsubst \
+    < /app/billing-agent-kustomize.yaml \
+    > /data/manifest-expanded/kustomization.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
+
 rm /data/manifest-expanded/kustomization.yaml
 
 # Create TLS cert and secret
