@@ -8,12 +8,29 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
   annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
     marketplace.cloud.google.com/deploy-info: '{"partner_id": "datastax-public", "product_id": "pulsar-marketplace", "partner_name": "DataStax"}'
 
 spec:
   descriptor:
     type: pulsar-marketplace
     version: "2.0.11-rc1"
+    description: >-
+      Apache Pulsar is a cloud-native, distributed messaging and streaming platform originally created at Yahoo! and now a top-level Apache Software Foundation project
+    maintainers:
+      - name: DataStax
+        url: https://github.com/DSPN/pulsar-gcp-mp/blob/main/README.md
+    links:
+      - description: 'User Guide: pulsar-marketplace'
+        url: https://github.com/DSPN/pulsar-gcp-mp/blob/main/README.md
+    notes: |-
+
+      # Wait for the Application components to become available
+      It will take about 10 minutes for all the components of pulsar to become fully available and ready to use. You can follow the status of the install process with the following command:
+
+        `watch kubectl get pods --namespace "$NAMESPACE"`
+
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ .Release.Name }}"
