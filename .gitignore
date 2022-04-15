@@ -132,4 +132,4 @@ dmypy.json
 *.swp
 *.swo
 
-/chart/pulsar-mp/charts
+/chart/pulsar-marketplace/charts

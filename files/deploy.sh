@@ -63,11 +63,22 @@ create_manifests.sh
 
 sed -i "s|fullname-override-template-placeholder|$NAME|g" /data/manifest-expanded/chart.yaml
 
-KUBE_PROM_NAME="$(grep -E '^.*name: .*-kube-.*-operator$' /data/manifest-expanded/chart.yaml | tail -n1 | awk -F ' ' '{print $2}')"
-KUBE_PROM_NAME="${KUBE_PROM_NAME#${NAME}-}"
-KUBE_PROM_NAME="${KUBE_PROM_NAME%-operator}"
-echo $KUBE_PROM_NAME
-export KUBE_PROM_NAME
+export WEBHOOK_ADMISS_SA="$(get-service-account.sh 'webhook-admiss-sa')"
+export GRAFANA_SA="$(get-service-account.sh 'grafana-sa')"
+export PROM_OPERATOR_SA="$(get-service-account.sh 'prom-operator-sa')"
+export PROMETHEUS_SA="$(get-service-account.sh 'prometheus-sa')"
+
+export WEBHOOK_ADMISS_CREATE_JOB="$(/usr/bin/env python3 /app/get-resource-name.py 'admiss-create')"
+export WEBHOOK_ADMISS_PATCH_JOB="$(/usr/bin/env python3 /app/get-resource-name.py 'admiss-patch')"
+export GRAFANA_DEPLOYMENT="$(/usr/bin/env python3 /app/get-resource-name.py 'grafana')"
+export PROM_OPERATOR_DEPLOYMENT="$(/usr/bin/env python3 /app/get-resource-name.py 'prom-operator')"
+export PROMETHEUS_DEPLOYMENT="$(/usr/bin/env python3 /app/get-resource-name.py 'prometheus')"
+
+export PROM_NAME="${PROMETHEUS_DEPLOYMENT%%-prometheus}"
+echo "$PROM_NAME"
+
+export UBBAGENT_IMAGE="$(grep '^ubbagent-image-repository:' /data/final_values.yaml | awk -F ' ' '{print $2}')"
+export REPORTING_SECRET="$(grep '^reportingSecret:' /data/final_values.yaml | awk -F ' ' '{print $2}')"
 
 random_string() {
    set +o pipefail
@@ -80,37 +91,43 @@ DASHBOARD_USER_ADMIN_PASSWORD="$(random_string)"
 export GRAFANA_ADMIN_PASSWORD
 export DASHBOARD_USER_ADMIN_PASSWORD
 
-CHART_FILE_NAME=chart.yaml envsubst \
+envsubst \
     < /app/labels_and_service_accounts_kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
 kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-CHART_FILE_NAME=chart-kustomized.yaml envsubst \
+envsubst \
     < /app/excluded_resources_kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
-kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized2.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-CHART_FILE_NAME=chart-kustomized2.yaml envsubst \
+envsubst \
     < /app/kubesystem_kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
-kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized3.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-CHART_FILE_NAME=chart-kustomized3.yaml envsubst \
+envsubst \
     < /app/one-off-pods-kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
-kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized4.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-CHART_FILE_NAME=chart-kustomized4.yaml envsubst \
+envsubst \
     < /app/secrets-kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
-kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized5.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-CHART_FILE_NAME=chart-kustomized5.yaml envsubst \
+envsubst \
     < /app/crds_kustomize.yaml \
     > /data/manifest-expanded/kustomization.yaml
-kustomize build /data/manifest-expanded > /data/manifest-expanded/chart.yaml
+kustomize build /data/manifest-expanded > /data/manifest-expanded/chart-kustomized.yaml
+mv /data/manifest-expanded/chart-kustomized.yaml /data/manifest-expanded/chart.yaml
 
-rm /data/manifest-expanded/{kustomization,chart-kustomized,chart-kustomized2,chart-kustomized3,chart-kustomized4,chart-kustomized5}.yaml
+rm /data/manifest-expanded/kustomization.yaml
 
 # Create TLS cert and secret
 openssl req -x509 \
@@ -142,12 +159,6 @@ validate_app_resource.py --manifests "/data/resources.yaml"
 /bin/setassemblyphase.py \
   --manifest "/data/resources.yaml" \
   --status "Pending"
-
-echo
-echo
-cat /data/resources.yaml
-echo
-echo
 
 # Apply the manifest.
 kubectl apply --namespace="$NAMESPACE" \

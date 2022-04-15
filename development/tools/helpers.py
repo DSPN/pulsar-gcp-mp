@@ -23,7 +23,7 @@ def run(command):
     return cp
 
 def get_versions():
-    doc = yaml.safe_load(open(f"{tools_dir}/../../chart/pulsar-mp/Chart.yaml"))
+    doc = yaml.safe_load(open(f"{tools_dir}/../../chart/pulsar-marketplace/Chart.yaml"))
     version = doc['version']
     if version not in valid_versions:
         raise Exception(f"invalid version found in Chart.yaml: '{version}'")
@@ -37,7 +37,7 @@ def render_template(include_crds=False):
     include_crds_opt = '--include-crds' if include_crds else ""
     cp = run(
         f"""
-        helm template pulsar-mp {tools_dir}/../../chart/pulsar-mp/charts/*.tgz \
+        helm template {application_name} {tools_dir}/../../chart/pulsar-marketplace/charts/*.tgz \
             {include_crds_opt} \
             --set kube-prometheus-stack.enabled=true \
             --set kube-prometheus-stack.prometheusOperator.enabled=true \
@@ -46,7 +46,7 @@ def render_template(include_crds=False):
             --set secrets.key=my-key-placeholder \
             --set secrets.certificate=my-cert-placeholder \
             --set secrets.caCertificate=my-ca-cert-placeholder \
-            --set fullnameOverride=pulsar-mp
+            --set fullnameOverride=pulsar-marketplace
         """
         )
     if cp.returncode != 0:

@@ -1,5 +1,5 @@
 apiVersion: "v2"
-name: "pulsar-mp"
+name: "pulsar-marketplace"
 description: |
   Wrapper of Datastax helm chart for Apache Pulsar for GKE
 type: "application"

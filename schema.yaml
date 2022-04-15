@@ -14,12 +14,17 @@ x-google-marketplace:
   
   images:
 
-    broker:
+    '':
       properties:
         pulsar.image.broker.repository:
           type: REPO_WITH_REGISTRY
         pulsar.image.broker.tag:
           type: TAG
+
+    ubbagent:
+      properties:
+        ubbagent-image-repository:
+          type: FULL
 
     broker-sts:
       properties:
@@ -203,6 +208,11 @@ properties:
     x-google-marketplace:
       type: NAMESPACE
 
+  reportingSecret:
+    type: string
+    x-google-marketplace:
+      type: REPORTING_SECRET
+
   pulsar.default_storage.existingStorageClassName:
     type: string
     x-google-marketplace:
@@ -210,7 +220,7 @@ properties:
       storageClass:
         type: SSD
 
-  burnellServiceAccount:
+  burnell-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -231,7 +241,7 @@ properties:
                 resources: ['deployments', 'statefulsets']
                 verbs: ['list']
 
-  functionServiceAccount:
+  function-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -255,7 +265,7 @@ properties:
                 resources: ['statefulsets']
                 verbs: ['get', 'create', 'delete']
 
-  pulsarheartbeatServiceAccount:
+  pulsar-heartbeat-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -273,7 +283,7 @@ properties:
                 resources: ['deployments','statefulsets']
                 verbs: ['list']
 
-  grafanaServiceAccount:
+  grafana-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -294,7 +304,7 @@ properties:
                 resources: ['secrets', 'configmaps']
                 verbs: ['get', 'watch', 'list']
 
-  kube-prometheus-admissionServiceAccount:
+  webhook-admiss-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -318,7 +328,7 @@ properties:
                 resources: ['podsecuritypolicies']
                 verbs: ['use']
 
-  kube-prometheus-operatorServiceAccount:
+  prom-operator-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -357,7 +367,7 @@ properties:
                 resources: ['podsecuritypolicies']
                 verbs: ['use']
 
-  kube-prometheus-prometheusServiceAccount:
+  prometheus-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -378,7 +388,7 @@ properties:
                 resources: ['podsecuritypolicies']
                 verbs: ['use']
 
-  kube-state-metricsServiceAccount:
+  kube-state-metrics-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT
@@ -474,7 +484,7 @@ properties:
                 resources: ['volumeattachments']
                 verbs: ['list', 'watch']
 
-  prometheus-node-exporterServiceAccount:
+  prom-node-exporter-sa:
     type: string
     x-google-marketplace:
       type: SERVICE_ACCOUNT

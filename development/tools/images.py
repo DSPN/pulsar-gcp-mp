@@ -29,7 +29,7 @@ image_map = {
     'prometheus-operator-admission-patch': 'k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1',
     'prometheus-operator-configmap-reload': 'docker.io/jimmidyson/configmap-reload:v0.4.0',
     'prometheus-operator-config-reloader': 'quay.io/prometheus-operator/prometheus-config-reloader:v0.44.0',
-    'broker': 'datastax/lunastreaming-all:2.8.0_1.1.11',
+    helpers.application_name: 'datastax/lunastreaming-all:2.8.0_1.1.11',
     'broker-sts': 'datastax/lunastreaming-all:2.8.0_1.1.11',
     'function': 'datastax/lunastreaming-all:2.8.0_1.1.11',
     'zookeeper': 'datastax/lunastreaming:2.8.0_1.1.11',
@@ -41,7 +41,8 @@ image_map = {
     'burnell-log-collector': 'datastax/burnell:logcollector_latest',
     'sql': 'datastax/lunastreaming-all:2.8.0_1.1.11',
     'tardigrade': 'storjlabs/gateway:latest',
-    'heartbeat': 'datastax/pulsar-heartbeat:1.0.6'
+    'heartbeat': 'datastax/pulsar-heartbeat:1.0.6',
+    'ubbagent': 'tawamudu/ubbagent:1',
 }
 
 class ImageFinder:
@@ -137,10 +138,14 @@ class ImageTagger:
         for name, image in image_map.items():
             print(f"tagging '{name}'")
             tag = ':'.join(image.split(':')[1:])
+            if name == helpers.application_name:
+                image_ref = helpers.dev_staging_repo
+            else:
+                image_ref = f'{helpers.dev_staging_repo}/{name}'
             cp = helpers.run(
                 f"""
-                docker tag {image} {helpers.dev_staging_repo}/{name}:{version}
-                docker tag {image} {helpers.dev_staging_repo}/{name}:{short_version}
+                docker tag {image} {image_ref}:{version}
+                docker tag {image} {image_ref}:{short_version}
                 """
                 )
             if cp.returncode != 0:
@@ -157,9 +162,15 @@ class ImagePusher:
     def push(self):
         for name, image in image_map.items():
             print(f"pushing '{name}'")
+            if name == helpers.application_name:
+                image_ref = helpers.dev_staging_repo
+            else:
+                image_ref = f'{helpers.dev_staging_repo}/{name}'
+            version, short_version = helpers.get_versions()
             cp = helpers.run(
                 f"""
-                docker image push --all-tags {helpers.dev_staging_repo}/{name}
+                docker image push {image_ref}:{version}
+                docker image push {image_ref}:{short_version}
                 """
                 )
             if cp.returncode != 0:
@@ -173,13 +184,19 @@ class ImagePusher:
 
 class ImagePublisher:
 
-    def publish(self, version):
+    def publish(self, version, deployer_only):
         short_version = helpers.get_short_version(version)
         items = dict(image_map)
         items['deployer'] = 'deployer'
         for name in items.keys():
-            dev_staging_name = f"{helpers.dev_staging_repo}/{name}"
-            prod_staging_name = f"{helpers.prod_staging_repo}/{name}"
+            if deployer_only and name != 'deployer':
+                continue
+            if name == helpers.application_name:
+                dev_staging_name = helpers.dev_staging_repo
+                prod_staging_name = helpers.prod_staging_repo
+            else:
+                dev_staging_name = f"{helpers.dev_staging_repo}/{name}"
+                prod_staging_name = f"{helpers.prod_staging_repo}/{name}"
             print(f"creating tag. Source: '{dev_staging_name}', Dest: '{prod_staging_name}'")
             cp = helpers.run(
                 f"""
@@ -216,10 +233,14 @@ class ImageRemover:
         short_version = helpers.get_short_version(version)
         for name, image in image_map.items():
             print(f"removing '{name}' from local repo")
+            if name == helpers.application_name:
+                image_ref = helpers.dev_staging_repo
+            else:
+                image_ref = f'{helpers.dev_staging_repo}/{name}'
             cp = helpers.run(
                 f"""
-                docker image rm {helpers.dev_staging_repo}/{name}:{version}
-                docker image rm {helpers.dev_staging_repo}/{name}:{short_version}
+                docker image rm {image_ref}:{version}
+                docker image rm {image_ref}:{short_version}
                 """
                 )
             if cp.returncode != 0:
@@ -240,6 +261,10 @@ def main():
     parser.add_argument(
         '--version',
         '-v')
+    parser.add_argument(
+        '--deployer_only',
+        '-d',
+        action='store_true')
 
     args = parser.parse_args()
 
@@ -268,7 +293,7 @@ def main():
             print("<version is required for the 'publish' operation")
             sys.exit(1)
         version = args.version
-        ImagePublisher().publish(version)
+        ImagePublisher().publish(version, args.deployer_only)
 
 if __name__ == '__main__':
     main()

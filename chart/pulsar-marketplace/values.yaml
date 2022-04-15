@@ -1,3 +1,4 @@
+ubbagent-image-repository: null
 pulsar:
   fullnameOverride: fullname-override-template-placeholder
   enableAntiAffinity: false
@@ -110,8 +111,17 @@ pulsar:
 
   kube-prometheus-stack:
     enabled: true
+    nameOverride: prom
+    alertmanager:
+      serviceAccount:
+        create: false
     prometheusOperator:
       enabled: true
+      serviceAccount:
+        create: false
+    prometheus:
+      serviceAccount:
+        create: false
     grafana:
       enabled: true
       adminPassword: password
