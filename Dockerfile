@@ -13,6 +13,8 @@ COPY files/secrets-kustomize.yaml /app/
 COPY files/billing-agent-kustomize.yaml /app/
 COPY files/get-resource-name.py /app/
 
+COPY 3rd-party /3rd-party
+
 RUN /bin/bash -c 'chmod u+x /bin/get-service-account.sh'
 RUN /bin/bash -c 'curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash; \
 mv ./kustomize /bin/'
