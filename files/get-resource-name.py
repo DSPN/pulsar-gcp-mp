@@ -19,7 +19,13 @@ for d in yaml.safe_load_all(content):
                 d['metadata']['name'].endswith('-grafana')):
                 sys.stdout.write(d['metadata']['name'])
             elif (resource == 'prom-operator' and
-                d['metadata']['name'].endswith('-operator'):
+                d['metadata']['name'].endswith('-operator')):
+                sys.stdout.write(d['metadata']['name'])
+            elif (resource == 'kube-state-metrics' and
+                d['metadata']['name'].endswith('-state-metrics')):
+                sys.stdout.write(d['metadata']['name'])
+            elif (resource == 'pulsar-heartbeat' and
+                d['metadata']['name'].endswith('-pulsarheartbeat')):
                 sys.stdout.write(d['metadata']['name'])
         elif d['kind'] == Job:
             if (resource == 'admiss-create' and
