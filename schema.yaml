@@ -11,7 +11,17 @@ x-google-marketplace:
     releaseTypes:
       - Feature
     recommended: true
-  
+
+  clusterConstraints:
+    resources:
+      - replicas: 3
+        requests:
+          cpu: 6200m
+          memory: 10Gi
+        affinity:
+          simpleNodeAffinity:
+            type: REQUIRE_ONE_NODE_PER_REPLICA
+
   images:
 
     '':
