@@ -4,7 +4,7 @@ import subprocess
 import yaml
 
 valid_versions = [
-    "2.0.11-rc1"
+    "2.1.7-b1"
 ]
 
 application_name = 'pulsar-marketplace'

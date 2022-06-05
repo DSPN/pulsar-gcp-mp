@@ -159,7 +159,7 @@ openssl req -x509 \
     -out /app/tls.crt \
     -days 18250 \
     -nodes \
-    -subj "/C=US/ST=CA/L=NA/O=IT/CN=$NAME.$NAMESPACE"
+    -subj "/C=US/ST=CA/L=NA/O=IT/CN=$NAME-broker.$NAMESPACE.svc.cluster.local"
 cat /app/tls.key | base64 -w 0 > /app/tlsb64e.key
 cat /app/tls.crt | base64 -w 0 > /app/tlsb64e.crt
 
