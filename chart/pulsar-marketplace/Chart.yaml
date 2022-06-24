@@ -3,10 +3,10 @@ name: "pulsar-marketplace"
 description: |
   Wrapper of Datastax helm chart for Apache Pulsar for GKE
 type: "application"
-version: "2.1.7-b1"
+version: "3.0.2-b1"
 
 dependencies:
   - name: "pulsar"
-    version: "2.1.7"
+    version: "3.0.2"
     repository: "https://datastax.github.io/pulsar-helm-chart"
 deprecated: false

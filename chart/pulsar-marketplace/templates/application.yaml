@@ -15,7 +15,7 @@ metadata:
 spec:
   descriptor:
     type: pulsar-marketplace
-    version: "2.1.7-b1"
+    version: "3.0.2-b1"
     description: >-
       Apache Pulsar is a cloud-native, distributed messaging and streaming platform originally created at Yahoo! and now a top-level Apache Software Foundation project
     maintainers:
