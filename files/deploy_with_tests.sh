@@ -167,6 +167,9 @@ sed -r -i "s|(^ *?tls.key:).*$|\1 $(cat /app/tlsb64e.key)|" /data/manifest-expan
 sed -r -i "s|(^ *?tls.crt:).*$|\1 $(cat /app/tlsb64e.crt)|" /data/manifest-expanded/chart.yaml
 sed -r -i "s|(^ *?ca.crt:).*$|\1 $(cat /app/tlsb64e.crt)|" /data/manifest-expanded/chart.yaml
 
+# Fix invalid yaml syntax bug
+sed -r -i "s|(^.*- )=$|\1'='|g" /data/manifest-expanded/chart.yaml
+sed -r -i "s|(^.*- )=~$|\1'=~'|g" /data/manifest-expanded/chart.yaml
 
 # Assign owner references for the resources.
 /bin/set_ownership.py \
@@ -188,22 +191,28 @@ separate_tester_resources.py \
   --out_manifests "/data/resources.yaml" \
   --out_test_manifests "/data/tester.yaml"
 
+# Fix duplicate containerPort entry bug in grafana:
+sed -r -i '/.*containerPort: 3000/{N;N;d}' /data/resources.yaml
+
 # Apply the manifest.
 kubectl apply --namespace="$NAMESPACE" \
               --filename="/data/resources.yaml" \
-              --selector is-crd=yes || true
+              --selector is-crd=yes \
+              --server-side || true
 
 sleep 10
 
 # Now apply the other non crd resources.
 kubectl apply  --namespace="$NAMESPACE" \
                --filename="/data/resources.yaml" \
-               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=no
+               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=no \
+               --server-side
 
 # Lastly, apply the resources that require the kube-system namespace to be specified.
 kubectl apply  --namespace="kube-system" \
                --filename="/data/resources.yaml" \
-               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=yes
+               --selector is-crd=no,excluded-resource=no,requires-kube-system-namespace=yes \
+               --server-side
 
 patch_assembly_phase.sh --status="Success"
 

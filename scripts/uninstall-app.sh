@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export APP_INSTANCE_NAME=pulsar-mp
+export APP_INSTANCE_NAME=pulsar-marketplace
 export NAMESPACE=default
 
 for name in \

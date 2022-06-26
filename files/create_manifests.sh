@@ -109,6 +109,10 @@ for chart in "$data_dir/extracted"/*; do
   #   --manifest "$manifest_dir/$chart_manifest_file"
   #fi
 
+  # Fix invalid yaml syntax bug
+  sed -r -i "s|(^.*- )=$|\1'='|g" "$manifest_dir/$chart_manifest_file"
+  sed -r -i "s|(^.*- )=~$|\1'=~'|g" "$manifest_dir/$chart_manifest_file"
+
   ensure_k8s_apps_labels.py \
     --manifest "$manifest_dir/$chart_manifest_file" \
     --appname "$NAME"
