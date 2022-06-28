@@ -1,5 +1,10 @@
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm/onbuild
 
+# Upgrade to bionic to resolve CVE in expat package.
+RUN apt-get update &&\
+    apt-get -y install update-manager-core &&\
+    do-release-upgrade -f DistUpgradeViewNonInteractive
+
 COPY files/create_manifests.sh /bin/
 COPY files/deploy.sh /bin/
 COPY files/deploy_with_tests.sh /bin/
